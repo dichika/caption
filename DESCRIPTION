@@ -1,0 +1,10 @@
+Package: caption
+Type: Package
+Title: Add caption on your image
+Version: 0.0.1
+Date: 2016-03-14
+Author: Yoshio TOKOROSAWA
+Description: Add caption on your image
+License: MIT
+RoxygenNote: 5.0.1
+Imports:png, jpeg
