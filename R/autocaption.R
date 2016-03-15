@@ -1,5 +1,5 @@
 #' @export
-autocaption <- function(f_input, f_output = NULL, font_family =NULL, CROWD_VISION_KEY, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET){
+autocaption <- function(f_input, f_output = NULL, font_family = NULL, score = FALSE, CROWD_VISION_KEY, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET){
   require("translateR")
   require("httr")
   res_json <- getCrowdvisionResult(f_input = f_input,
@@ -7,7 +7,9 @@ autocaption <- function(f_input, f_output = NULL, font_family =NULL, CROWD_VISIO
                                    maxResults = 10,
                                    CROWD_VISION_KEY = CROWD_VISION_KEY)
   res <- jsonlite::fromJSON(content(res_json, as = "text"))$responses$labelAnnotations
-  name_en <- res[[1]]$description[sample(length(res[[1]]$description), 1)]
+  num <- sample(length(res[[1]]$description), 1)
+  name_en <- res[[1]]$description[num]
+  score <- trunc(res[[1]]$score[num] * 100)
   suppressWarnings(name_ja <- translate(content.vec = name_en,
                                         microsoft.client.id = client_id,
                                         microsoft.client.secret = client_secret,
@@ -15,6 +17,7 @@ autocaption <- function(f_input, f_output = NULL, font_family =NULL, CROWD_VISIO
                                         target.lang = "ja")
   )
   msg <- iconv(Nippon::kakasi(name_ja,"-JH"), from = "UTF-8")
+  msg <- ifelse(score, paste(msg, " ", score, "“"), msg)
   caption(message = msg, f_input = f_input, f_output = f_output, font_family = font_family)
   message("DE-KI-TA-YO!!!")
 }
