@@ -1,6 +1,6 @@
 
 #' @export
-caption <- function(message, f_input, f_output = NULL, position = 0.1, orientation = "portlait", font_color = "orange", font_size = NULL){
+caption <- function(message, f_input, f_output = NULL, position = 0.1, orientation = "portlait", font_color = "orange", font_size = NULL, font_family = NULL){
   ext <- tools::file_ext(f_input)
   if(grepl("^http:|^https:", f_input)){
     tmp <- tempfile()
@@ -22,8 +22,9 @@ caption <- function(message, f_input, f_output = NULL, position = 0.1, orientati
   } else {
     stop("png or jpeg")
   }
+  font_family <- ifelse(is.null(font_family), "HiraMaruProN-W4", font_family)
   if(Sys.info()['sysname'] == "Darwin"){
-    par(family="HiraMaruProN-W4")
+    par(family=font_family)
   }
   par(mar = c(0,0,0,0), xpd = NA, mgp = c(0,0,0), oma = c(0,0,0,0), ann = FALSE)
   plot.new()
