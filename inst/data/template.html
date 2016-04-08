@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+  <html lang='ja'>
+    <head>
+    <meta charset='utf-8'>
+      </head>
+      <body>
+      <canvas id='myCanvas' width='400' height='500'></canvas>
+        <script>
+        (function() {
+          var canvas = document.getElementById('myCanvas');
+          var context = canvas.getContext('2d');
+          var image = new Image();
+          image.src = '%s';
+          image.addEventListener('load', function() {
+            context.drawImage(image, 0, 0, 400, 500);
+          }, false);
+        })();
+      var drawFlag = false;
+      var oldX = 0;
+      var oldY = 0;
+      window.addEventListener('load', function(){
+        var can = document.getElementById('myCanvas');
+        can.addEventListener('mousemove', draw, true);
+        can.addEventListener('mousedown', function(e){
+          drawFlag = true;
+          oldX = e.clientX;
+          oldY = e.clientY;
+        }, false);
+        can.addEventListener('mouseup', function(){
+          drawFlag = false;
+        }, false);
+      }, true);
+      function draw(e){
+        if (!drawFlag) return;
+        var x = e.clientX;
+        var y = e.clientY;
+        var can = document.getElementById('myCanvas');
+        var context = can.getContext('2d');
+        context.strokeStyle = 'rgba(255,0,0,1)';
+        context.lineWidth = 5;
+        context.beginPath();
+        context.moveTo(oldX, oldY);
+        context.lineTo(x, y);
+        context.stroke();
+        context.closePath();
+        oldX = x;
+        oldY = y;
+      }
+      </script>
+        </body></html>
