@@ -4,7 +4,7 @@
     <meta charset='utf-8'>
       </head>
       <body>
-      <canvas id='myCanvas' width='400' height='500'></canvas>
+      <canvas id='myCanvas' width='%s' height='%s'></canvas>
         <script>
         (function() {
           var canvas = document.getElementById('myCanvas');
@@ -12,7 +12,7 @@
           var image = new Image();
           image.src = '%s';
           image.addEventListener('load', function() {
-            context.drawImage(image, 0, 0, 400, 500);
+            context.drawImage(image, 0, 0);
           }, false);
         })();
       var drawFlag = false;

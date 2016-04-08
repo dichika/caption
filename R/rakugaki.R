@@ -4,10 +4,24 @@ rakugaki <- function(imageurl){
   require("shinygadgets")
   # image
   path_template <- system.file("data/template.html", package = "caption")
-  htmltext <- readLines(path_template)
-  imageurl <- base64enc::dataURI(file=imageurl)
   tmp <- tempfile()
-  writeLines(sprintf(htmltext, imageurl), tmp)
+  download.file(url = imageurl,
+                destfile = tmp,
+                quiet = TRUE)
+  if(grepl("png$",imageurl)){
+    img <- png::readPNG(tmp)
+  } else if(grepl("jpeg$|jpg$",imageurl)){
+    img <- jpeg::readJPEG(tmp)
+  }
+  h <- as.character(dim(img)[1])
+  w <- as.character(dim(img)[2])
+
+  htmltext <- readLines(path_template)
+  htmltext <- paste(htmltext, collapse = "")
+  imageurl <- base64enc::dataURI(file=imageurl)
+  # get image size
+  tmp <- tempfile()
+  writeLines(sprintf(htmltext, w, h, imageurl),tmp)
   # shiny
   ui <- htmlTemplate(tmp)
   server <- function(input, output, session) {}
