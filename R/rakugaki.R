@@ -5,9 +5,13 @@ rakugaki <- function(imageurl){
   # image
   path_template <- system.file("data/template.html", package = "caption")
   tmp <- tempfile()
-  download.file(url = imageurl,
-                destfile = tmp,
-                quiet = TRUE)
+  if(grepl(c("^http://|^https://"), imageurl)){
+    download.file(url = imageurl,
+                  destfile = tmp,
+                  quiet = TRUE)
+  }else{
+    tmp <- imageurl
+  }
   if(grepl("png$",imageurl)){
     img <- png::readPNG(tmp)
   } else if(grepl("jpeg$|jpg$",imageurl)){
