@@ -22,9 +22,11 @@ caption <- function(message, f_input, f_output = NULL, position = 0.1, orientati
   } else {
     stop("png or jpeg")
   }
-  font_family <- ifelse(is.null(font_family), "HiraMaruProN-W4", font_family)
-  if(Sys.info()['sysname'] == "Darwin"){
+  if(!is.null(font_family)){
     par(family=font_family)
+  }else if(Sys.info()['sysname'] == "Darwin"){
+    # On Mac, use Hiragino.
+    par(family="HiraMaruProN-W4")
   }
   par(mar = c(0,0,0,0), xpd = NA, mgp = c(0,0,0), oma = c(0,0,0,0), ann = FALSE)
   plot.new()
