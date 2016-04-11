@@ -15,7 +15,7 @@ getCrowdvisionResult <- function(f_input, type = "TEXT_DETECTION", maxResults = 
 }
 
 #' @export
-autocaption <- function(f_input, f_output = NULL, font_family = NULL, score = FALSE, CROWD_VISION_KEY, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET){
+autocaption <- function(f_input, f_output = NULL, font_family = NULL, flag_score = FALSE, CROWD_VISION_KEY, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET){
   require("translateR")
   require("httr")
   res_json <- getCrowdvisionResult(f_input = f_input,
@@ -33,7 +33,9 @@ autocaption <- function(f_input, f_output = NULL, font_family = NULL, score = FA
                                         target.lang = "ja")
   )
   msg <- iconv(Nippon::kakasi(name_ja,"-JH"), from = "UTF-8")
-  msg <- ifelse(score, paste(msg, " ", score, "%"), msg)
+  if(flag_score){
+    msg <- ifelse(score, paste(msg, " ", score, "%"), msg)
+  }
   caption(message = msg, f_input = f_input, f_output = f_output, font_family = font_family)
   message("DE-KI-TA-YO!!!")
 }
